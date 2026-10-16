@@ -3,6 +3,12 @@
 All notable changes to LDA Local Assets are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-10-16
+
+### Fixed
+- Windows service script: paths with 8.3 short names are canonicalised before comparison; Windows PowerShell 5.1 child processes no longer inherit PowerShell 7's module path.
+- Re-applying permissions to an already locked folder no longer needs the audit privilege.
+
 ## [1.0.0] - 2026-10-16
 
 ### Changed

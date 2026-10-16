@@ -1,7 +1,7 @@
 {
   "name": "lda-assets",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "LDA Local Assets — local development stand-in compatible with Optimizely DAM. Part of Local Developer Accelerator for Optimizely by Coding Koala. Development use only.",
   "type": "module",
   "main": "src/server.js",

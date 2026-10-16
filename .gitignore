@@ -1,0 +1,11 @@
+node_modules/
+data/
+logs/
+tenants.json
+service-runtime/
+scripts/*.exe
+*.log
+*.corrupt-*
+.test-runtime/
+dist/
+release-notes.md

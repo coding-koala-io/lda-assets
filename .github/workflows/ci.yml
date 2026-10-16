@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, main, 'feature/**', 'release/**', 'hotfix/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install
+        run: npm ci
+      - name: Test
+        run: npm test

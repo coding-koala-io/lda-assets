@@ -1,0 +1,23 @@
+{
+  "name": "lda-assets",
+  "private": true,
+  "version": "1.0.0",
+  "description": "LDA Local Assets — local development stand-in compatible with Optimizely DAM. Part of Local Developer Accelerator for Optimizely by Coding Koala. Development use only.",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {"node": ">=24"},
+  "license": "BUSL-1.1",
+  "author": "Coding Koalas Pty Ltd",
+  "repository": "github:coding-koala-io/lda-assets",
+  "homepage": "https://github.com/coding-koala-io/lda-assets#readme",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test test/*.test.js",
+    "release:build": "node scripts/build-release.mjs",
+    "service:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 install",
+    "service:uninstall": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 uninstall",
+    "service:status": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 status",
+    "service:restart": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 restart",
+    "service:logs": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 logs"
+  }
+}

@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install
+        run: npm ci
+      - name: Test
+        run: npm test
+
+  release:
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Check tag matches package.json version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [ "$GITHUB_REF_NAME" != "v$VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not equal v$VERSION from package.json" >&2
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+      - name: Install
+        run: npm ci
+      - name: Build release
+        env:
+          LDA_RELEASE_COMMIT: ${{ github.sha }}
+        run: npm run release:build
+      - name: Extract release notes from CHANGELOG.md
+        shell: bash
+        run: node scripts/release-notes.mjs "$VERSION" dist/RELEASE-NOTES.md
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" dist/*.zip dist/SHA256SUMS dist/manifest.json --title "LDA Local Assets $VERSION" --notes-file dist/RELEASE-NOTES.md

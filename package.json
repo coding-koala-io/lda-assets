@@ -1,7 +1,7 @@
 {
   "name": "lda-assets",
   "private": true,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "LDA Local Assets — a local DAM picker and asset library for development, compatible with Optimizely CMS 13. Part of Local Developer Accelerator by Coding Koala. Development use only.",
   "type": "module",
   "main": "src/server.js",

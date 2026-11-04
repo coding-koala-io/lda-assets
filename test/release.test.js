@@ -86,7 +86,7 @@ test('npm release:build script, CI and release workflows, ignored dist folder an
   const release = readFileSync(join(repo, '.github/workflows/release.yml'), 'utf8');
   for (const text of ["tags: ['v*']", 'contents: write', 'npm test', 'npm run release:build', 'gh release create "$TAG" dist/*.zip dist/SHA256SUMS dist/manifest.json', '--title "LDA Local Assets $VERSION"', '--notes-file', 'GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}', '"$GITHUB_REF_NAME" != "v$VERSION"', 'needs: test']) assert.ok(release.includes(text), text);
   const guide = readFileSync(join(repo, 'docs/RELEASING.md'), 'utf8');
-  for (const text of ['git flow release start X.Y.Z', 'CHANGELOG', 'Change Date', 'npm test', 'git flow release finish X.Y.Z', 'git push origin main develop --tags']) assert.ok(guide.includes(text), text);
+  for (const text of ['git flow release start X.Y.Z', 'CHANGELOG', 'Leave `LICENSE.md` alone', 'npm test', 'git flow release finish X.Y.Z', 'git push origin main develop --tags']) assert.ok(guide.includes(text), text);
 });
 
 test('release build produces a zip, sums and manifest; the unpacked zip starts and answers /health', {skip: !canZip, timeout: 60000}, async t => {
@@ -119,12 +119,12 @@ test('release build produces a zip, sums and manifest; the unpacked zip starts a
   const exited = once(child, 'exit');
   try {
     await eventually(() => { assert.equal(child.exitCode, null, stdout + stderr); return /listening at http:\/\/127\.0\.0\.1:(\d+)/.test(stdout); }, 10000);
-    assert.match(stdout, new RegExp(`LDA Local Assets ${pkg.version.replace(/\./g, '\\.')} \\(Local Developer Accelerator for Optimizely\\) listening at`));
+    assert.match(stdout, new RegExp(`LDA Local Assets ${pkg.version.replace(/\./g, '\\.')} \\(Local Developer Accelerator \\(LDA\\), compatible with Optimizely CMS 13\\) listening at`));
     const port = /listening at http:\/\/127\.0\.0\.1:(\d+)/.exec(stdout)[1];
     const health = await (await fetch(`http://127.0.0.1:${port}/health`, {headers: {Connection: 'close'}})).json();
     assert.equal(health.product, 'assets'); assert.equal(health.version, pkg.version); assert.equal(health.dataVersion, 1);
     const licence = await (await fetch(`http://127.0.0.1:${port}/about/licence`, {headers: {Connection: 'close'}})).text();
-    assert.match(licence, /Business Source License 1\.1/);
+    assert.match(licence, /Apache License/);
   } finally {
     // Stop the unpacked server before the scratch folder (its working directory) is removed.
     if (child.exitCode === null && child.signalCode === null) child.kill();

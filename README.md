@@ -1,4 +1,4 @@
-> **Development and research use only. Never use in production.**
+> **Development and research use only. Not designed or tested for production use.**
 > LDA Local Assets runs local stand-ins for Optimizely cloud services on a single
 > developer machine. It is not a replacement for any Optimizely service: its
 > behaviour, limits and performance differ, so always test against the real services
@@ -12,32 +12,44 @@
 
 # LDA Local Assets
 
-Part of **Local Developer Accelerator for Optimizely** — by Coding Koala. Compatible with Optimizely DAM for CMS 13.
+**The Optimizely CMS 13 DAM picker, running on your own laptop.** Upload an asset, pick it in the CMS editor, and query it through Graph, all locally.
 
-A single Node.js process that stores an asset library, serves the CMS 13 DAM picker and files, and pushes asset documents into the `cmp` source of a linked Graph gateway (for example LDA Local Graph).
+Part of **Local Developer Accelerator** by Coding Koala. Works with [LDA Local Graph](https://github.com/coding-koala-io/lda-graph). Compatible with Optimizely CMS 13. Development use only, not for production. Not affiliated with or endorsed by Optimizely.
 
-Usage tracking is best-effort, credentials are accepted without validation on the CMS endpoints, and image resizing is not available.
+## 2-minute quick start
 
-## Install with the LDA CLI
+Needs LDA Local Graph running first.
 
 ```powershell
-npm i -g https://github.com/coding-koala-io/local-developer-accelerator/releases/download/v1.0.0/coding-koala-io-accelerator-1.0.0.tgz
+irm https://github.com/coding-koala-io/local-developer-accelerator/releases/latest/download/install.ps1 | iex
 lda install assets
 ```
 
-Once the CLI is published to npm, you can install it with `npm i -g @coding-koala-io/accelerator` instead. `lda self-update` handles both.
+1. Open <http://localhost:8083/>, create an instance and fill in its **Graph link** (address, `appKey` and `secret` of your local Graph tenant).
+2. Click **Add sample assets**, then **Sync all to Graph now**. **Check DAM visibility** must show **yes**.
+3. Copy the **Connect** snippet into `appsettings.Development.json`, register `services.AddContentGraph().AddDamUI().AddGraphContentSources();` and start the CMS. The picker now opens in the editor.
 
-The CLI installs the latest release as the Windows service `LdaAssets` and prints the CMS settings for the first instance. To work on the code itself, see [Getting started from source](#getting-started-from-source).
+Working on the code itself? See [Getting started from source](#getting-started-from-source).
 
-## Why this exists
+## Why developers use it
 
-- **Faster inner loop.** Upload an asset, select it in the CMS and inspect its metadata on your own machine.
-- **Works locally.** Develop with your own files or generated sample images and a sample PDF.
-- **Everything is visible.** Inspect Graph synchronization status, optional usage tracking and individual requests.
-- **Several sites, one process.** Give each development site its own assets, credentials, folders and linked Graph instance.
-- **Easy to reset.** Clear one asset library and try the CMS integration again.
+- **Build DAM features before your DAM is connected.** Pick, preview and query assets on your machine.
+- **Your own files or samples.** Upload your own, or generate sample images and a PDF.
+- **Every request visible.** Sync status, usage tracking and individual requests per instance.
+- **Reset in seconds.** Clear one library and try the integration again.
 
-It is for development and research use only.
+## What it doesn't do (read before you rely on it)
+
+- No image resizing, renditions, transcoding, CDN or cloud upload APIs.
+- Credentials are deliberately permissive on the CMS endpoints: never expose it to a network.
+- Usage tracking is best effort.
+- Behaviour differs from the real service. Always test against the real DAM before release.
+
+Full list: [Limitations](#limitations).
+
+## Upgrading a site from CMS 12?
+
+Most CMS 12 sites need a .NET 10 move, package changes and, if they use Search & Navigation, a search rebuild. [RepoKoala](https://repokoala.com/?utm_source=github&utm_medium=readme&utm_campaign=lda-assets) gives a written readiness report with a fixed price per application, before you commit budget. Our senior developers review and test every change.
 
 ## Getting started from source
 
@@ -232,11 +244,10 @@ Install does not read the old service's settings, so also pass `-Port <n>` if th
 
 ## Licence
 
-LDA Local Assets is published by Coding Koalas Pty Ltd under the **Business Source License 1.1**:
+LDA Local Assets is published by Coding Koalas Pty Ltd under the **Apache License 2.0**:
 
-- Free for development, testing, demos and other non-production use, by anyone, including companies (agencies, in-house teams and consultants).
-- Production use is not permitted.
-- Each version converts to the Apache License 2.0 on its Change Date (four years after release; see [LICENSE.md](LICENSE.md)).
+- Open source under the Apache License 2.0: free to use, change and share.
+- It is still a development tool: not for production use, provided "as is".
 
 Legal documents: [LICENSE.md](LICENSE.md) · [LEGAL-NOTICE.md](LEGAL-NOTICE.md) · [PRIVACY.md](PRIVACY.md) · [CLEAN-ROOM.md](CLEAN-ROOM.md) · [TAKEDOWN-AND-CONTACT.md](TAKEDOWN-AND-CONTACT.md) · [CONTRIBUTING.md](CONTRIBUTING.md).
 

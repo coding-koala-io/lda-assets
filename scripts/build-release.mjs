@@ -6,7 +6,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {product} from '../src/product.js';
 
-export const STAGED_FILES = ['scripts/service.ps1', 'scripts/service-xml.js', 'package.json', 'LICENSE.md', 'README.md', 'LEGAL-NOTICE.md', 'PRIVACY.md', 'CHANGELOG.md', 'CLEAN-ROOM.md', 'TAKEDOWN-AND-CONTACT.md', 'CONTRIBUTING.md', 'docs/protocol.md', 'docs/RELEASING.md'];
+export const STAGED_FILES = ['scripts/service.ps1', 'scripts/service-xml.js', 'package.json', 'LICENSE.md', 'NOTICE', 'README.md', 'LEGAL-NOTICE.md', 'PRIVACY.md', 'CHANGELOG.md', 'CLEAN-ROOM.md', 'TAKEDOWN-AND-CONTACT.md', 'CONTRIBUTING.md', 'docs/protocol.md', 'docs/RELEASING.md'];
 const repoRoot = path.resolve(import.meta.dirname, '..');
 
 export const zipName = (key, version) => `lda-${key}-${version}.zip`;

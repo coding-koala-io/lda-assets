@@ -12,7 +12,7 @@ Releases use git flow. `main` holds released versions, `develop` is the integrat
 2. Prepare the release on the `release/X.Y.Z` branch:
    - Set `"version": "X.Y.Z"` in `package.json` and `package-lock.json`.
    - In `CHANGELOG.md`, rename `## [X.Y.Z] - unreleased` to `## [X.Y.Z] - YYYY-MM-DD` (today's date).
-   - In `LICENSE.md`, set `Licensed Work` to `LDA Local Assets X.Y.Z` and `Change Date` to 4 years after the release date (for example a release on 2026-10-16 has Change Date 2030-10-16).
+   - Leave `LICENSE.md` alone: it is the standard Apache License 2.0 text, with no version or date in it.
    - If the stored data format changed, raise `dataVersion` in `src/product.js` and add an upgrade note to the changelog.
 
 3. Run the tests and a local release build:

@@ -36,12 +36,12 @@ test('product identity comes from package.json and src/product.js',()=>{
  assert.deepEqual({...product},{key:'assets',name:'LDA Local Assets',suite:'Local Developer Accelerator for Optimizely',publisher:'Coding Koalas Pty Ltd',version:pkg.version,dataVersion:1,compatibleWith:'Optimizely DAM'});
  assert.equal(pkg.name,'lda-assets');assert.match(pkg.version,/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/);
  // Release metadata is checked by format, so a version bump does not break the tests.
- const license=readFileSync(join(repo,'LICENSE.md'),'utf8');assert.equal(license.match(/^Licensed Work:\s+(.+)$/m)?.[1].trim(),`LDA Local Assets ${pkg.version}`);
- const changeDate=license.match(/^Change Date:\s+(\d{4}-\d{2}-\d{2})\s*$/m)?.[1];assert.ok(changeDate&&new Date(changeDate).toISOString().startsWith(changeDate),'Change Date is a valid YYYY-MM-DD date');
+ const license=readFileSync(join(repo,'LICENSE.md'),'utf8');for(const text of['Apache License','Version 2.0, January 2004','TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION','END OF TERMS AND CONDITIONS'])assert.ok(license.includes(text),text);assert.doesNotMatch(license,/Business Source License|Change Date/);
+ const notice=readFileSync(join(repo,'NOTICE'),'utf8');for(const text of['Local Developer Accelerator (LDA) Local Assets','Copyright 2026 Coding Koalas Pty Ltd (ACN 668 775 433)','compatible with Optimizely CMS 13','not affiliated with or endorsed by Optimizely'])assert.ok(notice.includes(text),text);
  const heading=readFileSync(join(repo,'CHANGELOG.md'),'utf8').split(/\r?\n/).find(line=>line.startsWith(`## [${pkg.version}] - `));assert.ok(heading&&/ - (unreleased|\d{4}-\d{2}-\d{2})$/.test(heading),'CHANGELOG has an unreleased or dated section for the package version');
-assert.equal(pkg.private,true);assert.equal(pkg.license,'BUSL-1.1');assert.equal(pkg.author,'Coding Koalas Pty Ltd');
+assert.equal(pkg.private,true);assert.equal(pkg.license,'Apache-2.0');assert.equal(pkg.author,'Coding Koalas Pty Ltd');
  assert.equal(pkg.repository,'github:coding-koala-io/lda-assets');assert.equal(pkg.homepage,'https://github.com/coding-koala-io/lda-assets#readme');assert.equal(pkg.engines.node,'>=24');
- assert.equal(pkg.description,'LDA Local Assets — local development stand-in compatible with Optimizely DAM. Part of Local Developer Accelerator for Optimizely by Coding Koala. Development use only.');
+ assert.equal(pkg.description,'LDA Local Assets — a local DAM picker and asset library for development, compatible with Optimizely CMS 13. Part of Local Developer Accelerator by Coding Koala. Development use only.');
  assert.equal(pkg.scripts['release:build'],'node scripts/build-release.mjs');
 });
 test('/health reports product, version and dataVersion with instance details for loopback callers',async t=>{
@@ -97,12 +97,12 @@ test('banner, header, title suffix and footer appear on dashboard, instance, ass
 });
 test('about pages show product facts and render the repository legal files as escaped text',async t=>{
  const gw=await gateway(t);const about=await gw.request('/about');assert.equal(about.status,200);
- for(const text of['LDA Local Assets','Local Developer Accelerator for Optimizely',`<dd>${pkg.version}</dd>`,'<dt>Data version</dt><dd>1</dd>','Coding Koalas Pty Ltd','Business Source License 1.1 — free for development and other non-production use','href="/about/privacy"','href="/about/licence"','href="/about/legal"'])assert.ok(about.data.includes(text),text);
+ for(const text of['LDA Local Assets','Local Developer Accelerator for Optimizely',`<dd>${pkg.version}</dd>`,'<dt>Data version</dt><dd>1</dd>','Coding Koalas Pty Ltd','Apache License 2.0 — development tool, not for production use','href="/about/privacy"','href="/about/licence"','href="/about/legal"'])assert.ok(about.data.includes(text),text);
  for(const [path,file]of[['/about/privacy','PRIVACY.md'],['/about/licence','LICENSE.md'],['/about/legal','LEGAL-NOTICE.md']]){
   const response=await gw.request(path);assert.equal(response.status,200,path);assert.match(response.headers.get('content-type'),/^text\/html/);assert.match(response.headers.get('content-security-policy'),/frame-ancestors 'self'/);
   assert.ok(response.data.includes(`<pre>${escape(readFileSync(join(repo,file),'utf8'))}</pre>`),path);
  }
- assert.ok((await gw.request('/about/licence')).data.includes('Business Source License 1.1'));
+ assert.ok((await gw.request('/about/licence')).data.includes('Apache License'));
  assert.equal((await gw.request('/about/unknown')).status,404);
 });
 test('about pages read files at request time, escape markup and return 404 text when a file is missing',async t=>{

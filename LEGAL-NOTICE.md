@@ -36,7 +36,7 @@ To the extent the law allows, we are not liable for any loss or damage of any ki
 Nothing in this notice or the licence excludes, restricts or modifies any right or remedy, or any guarantee, warranty or other term or condition, implied or imposed by law (including the Australian Consumer Law) that cannot lawfully be excluded or limited. Where liability can be limited but not excluded, it is limited, at our option, to supplying the software again or paying the cost of having it supplied again.
 
 ## Licence
-LDA Local Assets is licensed under the Business Source License 1.1. See LICENSE.md. If this notice and the licence conflict, the licence governs the copyright grant, and this notice governs everything else.
+LDA Local Assets is licensed under the Apache License 2.0. See LICENSE.md and NOTICE. Versions up to and including 1.0.2 remain under the Business Source License 1.1. It is still a development tool: not for production use, and provided "as is". If this notice and the licence conflict, the licence governs the copyright grant, and this notice governs everything else.
 
 ## Concerns
 If you believe this project infringes your rights, see TAKEDOWN-AND-CONTACT.md.

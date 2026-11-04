@@ -124,7 +124,7 @@ test('release build produces a zip, sums and manifest; the unpacked zip starts a
     const health = await (await fetch(`http://127.0.0.1:${port}/health`, {headers: {Connection: 'close'}})).json();
     assert.equal(health.product, 'assets'); assert.equal(health.version, pkg.version); assert.equal(health.dataVersion, 1);
     const licence = await (await fetch(`http://127.0.0.1:${port}/about/licence`, {headers: {Connection: 'close'}})).text();
-    assert.match(licence, /Business Source License 1\.1/);
+    assert.match(licence, /Apache License/);
   } finally {
     // Stop the unpacked server before the scratch folder (its working directory) is removed.
     if (child.exitCode === null && child.signalCode === null) child.kill();

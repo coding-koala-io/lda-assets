@@ -8,7 +8,7 @@ const links = () => `<p>${[['/about','About'],['/about/privacy','Privacy'],['/ab
 /** About pages read the repository-root documents at request time and show them as escaped text. */
 export async function aboutPage(path, root = new URL('../', import.meta.url)) {
   if (path === '/about') {
-    const rows = [['Product', product.name], ['Suite', product.suite], ['Version', product.version], ['Data version', product.dataVersion], ['Publisher', `${product.publisher} (ACN 668 775 433)`], ['Compatible with', product.compatibleWith], ['Licence', 'Business Source License 1.1 — free for development and other non-production use']];
+    const rows = [['Product', product.name], ['Suite', product.suite], ['Version', product.version], ['Data version', product.dataVersion], ['Publisher', `${product.publisher} (ACN 668 775 433)`], ['Compatible with', product.compatibleWith], ['Licence', 'Apache License 2.0 — development tool, not for production use']];
     return {status: 200, html: page('About', `<dl>${rows.map(([name, value]) => `<dt>${e(name)}</dt><dd>${e(value)}</dd>`).join('')}</dl><p>Development use only, not for production. Not affiliated with or endorsed by Optimizely.</p>${links()}`)};
   }
   const entry = ABOUT_FILES[path];

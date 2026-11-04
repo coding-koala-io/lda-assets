@@ -3,6 +3,11 @@
 All notable changes to LDA Local Assets are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Licence: versions up to and including 1.0.2 stay under the Business Source License 1.1; from the next release the code is under the Apache License 2.0 (see LICENSE.md and NOTICE).
+
 ## [1.0.2] - 2026-10-16
 
 ### Fixed

@@ -3,6 +3,11 @@
 All notable changes to LDA Local Assets are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-11-04
+
+### Changed
+- README headline: a local development tool compatible with Optimizely CMS 13.
+
 ## [1.1.1] - 2026-11-04
 
 ### Changed

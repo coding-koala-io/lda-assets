@@ -1,6 +1,6 @@
 # Contributing to LDA Local Assets
 
-Thank you for helping. LDA Local Assets is part of Local Developer Accelerator for Optimizely, published by Coding Koalas Pty Ltd. Please read the legal rules below before you open a pull request.
+Thank you for helping. LDA Local Assets is part of Local Developer Accelerator (LDA), compatible with Optimizely CMS 13, published by Coding Koalas Pty Ltd. Please read the legal rules below before you open a pull request. Not affiliated with or endorsed by Optimizely. Optimizely is a trade mark of its owner.
 
 ## How to run the tests
 1. Install Node.js 24 or later.

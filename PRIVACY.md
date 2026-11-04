@@ -1,6 +1,6 @@
 # Privacy
 
-LDA Local Assets ("the tool") is a free, development-only local stand-in compatible with Optimizely DAM for Optimizely CMS 13. It is part of Local Developer Accelerator for Optimizely, by Coding Koala. This notice explains what data it handles.
+LDA Local Assets ("the tool") is a free, development-only local stand-in compatible with Optimizely DAM for Optimizely CMS 13. It is part of Local Developer Accelerator (LDA), compatible with Optimizely CMS 13, by Coding Koala. This notice explains what data it handles. Not affiliated with or endorsed by Optimizely. Optimizely is a trade mark of its owner.
 
 ## Summary
 - The tool runs entirely on your own computer.

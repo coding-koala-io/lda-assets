@@ -3,10 +3,13 @@
 All notable changes to LDA Local Assets are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0] - unreleased
 
 ### Changed
-- Licence: versions up to and including 1.0.2 stay under the Business Source License 1.1; from the next release the code is under the Apache License 2.0 (see LICENSE.md and NOTICE).
+- Licence changed to Apache 2.0; earlier versions stay under the Business Source License 1.1. Versions up to and including 1.0.2 keep that licence. LICENSE.md is now the standard Apache License 2.0 text, and a NOTICE file ships with every release.
+- Product name is now "Local Developer Accelerator (LDA), compatible with Optimizely CMS 13" in the documents, About page and page banner.
+- Legal notice: production wording now reads "Not designed or tested for production use. Provided 'as is', without warranties, under sections 7 and 8 of the Apache License 2.0. Nothing here limits rights you have under law that cannot be excluded."
+- README: new top section with a 2-minute quick start through the one-line installer, what it does not do, and the licence section for Apache 2.0.
 
 ## [1.0.2] - 2026-10-16
 

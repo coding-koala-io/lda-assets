@@ -12,9 +12,9 @@
 
 # LDA Local Assets
 
-**The Optimizely CMS 13 DAM picker, running on your own laptop.** Upload an asset, pick it in the CMS editor, and query it through Graph, all locally.
+**A local development tool compatible with Optimizely CMS 13: a DAM picker stand-in on your own laptop.** Upload an asset, pick it in the CMS editor, and query it through Graph, all locally.
 
-Part of **Local Developer Accelerator** by Coding Koala. Works with [LDA Local Graph](https://github.com/coding-koala-io/lda-graph). Compatible with Optimizely CMS 13. Development use only, not for production. Not affiliated with or endorsed by Optimizely.
+Part of **Local Developer Accelerator by Coding Koala**. Works with [LDA Local Graph](https://github.com/coding-koala-io/lda-graph). Compatible with Optimizely CMS 13. Development use only, not for production. Not affiliated with or endorsed by Optimizely.
 
 ## 2-minute quick start
 

@@ -1,10 +1,14 @@
 # Rights-holder concerns, takedown and contact
 
-LDA Local Assets is published by Coding Koalas Pty Ltd (ACN 668 775 433). We respect the intellectual property of Optimizely and everyone else. If you believe this project infringes your rights, breaches an agreement or is misleading, please tell us. We will act in good faith and promptly.
+LDA Local Assets: Built by Coding Koala. We respect the intellectual property of Optimizely and everyone else. If you believe this project infringes your rights, breaches an agreement or is misleading, please tell us. We will act in good faith and promptly.
+
+Copyright 2026 Coding Koalas Pty Ltd (ACN 668 775 433).
+
+Not affiliated with or endorsed by Optimizely.
 
 ## Contact
 - Email: legal@codingkoala.io
-- Post: Coding Koalas Pty Ltd, Sydney NSW, Australia
+- Post: Coding Koala, Sydney NSW, Australia
 - Please do not use public GitHub issues for legal notices.
 
 ## What to include

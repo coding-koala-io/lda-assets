@@ -135,7 +135,7 @@ export async function startServer(options={}){
   if(!loopback(server.config.host))(logger.warn??logger.log).call(logger,startupWarning(server.config.host));
   try{await new Promise((accept,reject)=>{server.once('error',reject);server.listen(server.config.port,server.config.host,accept);});}
   catch(error){await server.tenants.close();throw error;}
-  logger.log(`${product.name} ${product.version} (${product.suite}) listening at http://${server.config.host}:${server.address().port} — development use only`);return server;
+  logger.log(`${product.name} ${product.version} listening at http://${server.config.host}:${server.address().port} (development use only)`);return server;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
   let server;

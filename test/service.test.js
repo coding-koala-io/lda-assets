@@ -57,7 +57,7 @@ test('service XML: default runtime, absolute paths, quoted argument, escaped XML
   assert.ok(result.includes('&amp;')); assert.ok(result.includes('&apos;')); assert.ok(result.includes('&lt;')); assert.ok(result.includes('&quot;'));
   const env = Object.fromEntries([...result.matchAll(/<env name="([^"]+)" value="([^"]*)"/g)].map(m => [m[1], decode(m[2])]));
   assert.deepEqual(env, {PORT: '8083', HOST: '127.0.0.1', TENANTS_FILE: options.runtimeRoot + '\\tenants.json', DATA_DIR: options.runtimeRoot + '\\data', LOG_DIR: options.runtimeRoot + '\\logs'});
-  for (const [name, value] of Object.entries({id: 'LdaAssets', name: 'Local Developer Accelerator — Assets (development only)', description: 'LDA Local Assets — local development stand-in compatible with Optimizely DAM. Not for production. By Coding Koala.', startmode: 'Automatic', delayedAutoStart: 'true', resetfailure: '1 hour', stoptimeout: '15 sec', sizeThreshold: '10240', keepFiles: '5', domain: 'NT AUTHORITY', user: 'LocalService', logpath: options.runtimeRoot + '\\service\\logs'})) assert.equal(element(result, name), value);
+  for (const [name, value] of Object.entries({id: 'LdaAssets', name: 'Local Developer Accelerator — Assets (development only)', description: 'LDA Local Assets: local development stand-in compatible with Optimizely DAM. Development use only. Not affiliated with or endorsed by Optimizely. Built by Coding Koala.', startmode: 'Automatic', delayedAutoStart: 'true', resetfailure: '1 hour', stoptimeout: '15 sec', sizeThreshold: '10240', keepFiles: '5', domain: 'NT AUTHORITY', user: 'LocalService', logpath: options.runtimeRoot + '\\service\\logs'})) assert.equal(element(result, name), value);
   assert.equal((result.match(/<onfailure action="restart" delay="10 sec" \/>/g) ?? []).length, 3);
   assert.match(result, /<log mode="roll-by-size">/);
   assert.match(result, /<description>.+<\/description>/);
@@ -176,7 +176,7 @@ test('without -RuntimeRoot the script follows the installed service to its runti
 test('service defaults: LdaAssets id, display name, description and a runtime root with spaces stay correctly quoted', () => {
   assert.equal(SERVICE_ID, 'LdaAssets');
   assert.equal(DISPLAY_NAME, 'Local Developer Accelerator \u2014 Assets (development only)');
-  assert.equal(DESCRIPTION, 'LDA Local Assets \u2014 local development stand-in compatible with Optimizely DAM. Not for production. By Coding Koala.');
+  assert.equal(DESCRIPTION, 'LDA Local Assets: local development stand-in compatible with Optimizely DAM. Development use only. Not affiliated with or endorsed by Optimizely. Built by Coding Koala.');
   const options = {nodePath: 'C:\\Program Files\\nodejs\\node.exe', repoRoot: 'C:\\Program Files\\Coding Koala\\lda-assets'};
   const result = generateServiceXml(options);
   const env = Object.fromEntries([...result.matchAll(/<env name="([^"]+)" value="([^"]*)"/g)].map(m => [m[1], decode(m[2])]));
@@ -220,7 +220,7 @@ test('README upgrade path from the pre-rename service id, CONTRIBUTING DCO/licen
   for (const text of [`## Upgrading from an older install (${legacy})`, 'lda adopt', `sc.exe stop ${legacy}`, `sc.exe delete ${legacy}`, 'scripts\\service.ps1 install -RuntimeRoot "<old runtime folder>"', 'the data folder is not touched']) assert.ok(readme.includes(text), text);
   const contributing = readFileSync(join(repo, 'CONTRIBUTING.md'), 'utf8');
   assert.ok(!contributing.includes('lawyer review'));
-  for (const text of ['`git commit -s`', 'https://developercertificate.org/', 'Contributions are licensed to you and us under the same licence as this repository (Apache License 2.0). By contributing you also grant Coding Koalas Pty Ltd a perpetual, worldwide, royalty-free licence to use, modify and relicense your contribution, including under other licence terms.']) assert.ok(contributing.includes(text), text);
+  for (const text of ['`git commit -s`', 'https://developercertificate.org/', 'Contributions are licensed to you and us under the same licence as this repository (Apache License 2.0). By contributing you also grant us a perpetual, worldwide, royalty-free licence to use, modify and relicense your contribution, including under other licence terms.']) assert.ok(contributing.includes(text), text);
   const cleanRoom = readFileSync(join(repo, 'CLEAN-ROOM.md'), 'utf8');
   assert.ok(!cleanRoom.includes('lawyer review'));
   assert.ok(!cleanRoom.includes('remains to be confirmed'));

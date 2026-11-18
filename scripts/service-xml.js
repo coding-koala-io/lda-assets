@@ -6,7 +6,7 @@ import {cmsSettings} from '../src/cms-settings.js';
 
 export const SERVICE_ID = 'LdaAssets';
 export const DISPLAY_NAME = 'Local Developer Accelerator — Assets (development only)';
-export const DESCRIPTION = 'LDA Local Assets — local development stand-in compatible with Optimizely DAM. Not for production. By Coding Koala.';
+export const DESCRIPTION = 'LDA Local Assets: local development stand-in compatible with Optimizely DAM. Development use only. Not affiliated with or endorsed by Optimizely. Built by Coding Koala.';
 export const DEFAULT_RUNTIME_ROOT = 'C:\\ProgramData\\Coding Koala\\Local Developer Accelerator\\Assets';
 export const WRAPPER_URL = 'https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe';
 

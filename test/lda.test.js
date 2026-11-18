@@ -14,14 +14,23 @@ import {configuration,startServer,startupWarning,isCmpApiRoute,loopbackAddress,R
 const repo=resolve(import.meta.dirname,'..');
 const pkg=JSON.parse(readFileSync(join(repo,'package.json'),'utf8'));
 const escape=value=>value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-const FOOTER=`LDA Local Assets ${pkg.version} · Development use only, not for production · Not affiliated with or endorsed by Optimizely · Optimizely® is a trademark of Optimizely North America Inc. · No warranty · <a href="/about">About</a> · <a href="/about/privacy">Privacy</a> · <a href="/about/licence">Licence</a> · <a href="/about/legal">Legal notice</a>`;
-// The picker is opened by the CMS, so its footer links open in a new tab.
-const FRAMED_FOOTER=FOOTER.replace(/(href="\/about[^"]*")/g,'$1 target="_blank" rel="noopener"');
+const FOOTER=`LDA Local Assets ${pkg.version} · Apache 2.0 · Built by <a href="https://codingkoala.io" target="_blank" rel="noopener noreferrer">Coding Koala</a> · Development use only · Not affiliated with or endorsed by Optimizely. · <a href="/about">About</a> · <a href="/about/privacy">Privacy</a> · <a href="/about/licence">Licence</a>`;
+const ABOUT_FOOTER=`LDA Local Assets ${pkg.version} · Apache 2.0 · Development use only · <a href="/about">About</a> · <a href="/about/privacy">Privacy</a> · <a href="/about/licence">Licence</a>`;
+// The CMS picker carries only the product identity and an About link.
+const FRAMED_FOOTER=`LDA Local Assets ${pkg.version} · Development use only · <a href="/about" target="_blank" rel="noopener noreferrer">About</a>`;
 function chrome(html,label){
  assert.match(html,/<title>[^<]* · LDA Local Assets<\/title>/,label+' title');
  assert.ok(html.includes('<strong>Development use only — not for production.</strong>'),label+' banner');
- assert.ok(html.includes('Local Developer Accelerator (LDA), compatible with Optimizely CMS 13 · by Coding Koala'),label+' banner suite');
- assert.ok(html.includes(label.startsWith('picker')?FRAMED_FOOTER:FOOTER),label+' footer');
+ const picker=label.startsWith('picker');
+ assert.ok(html.includes(picker ? '<small>Local Developer Accelerator (LDA)</small>' : '<small>Local Developer Accelerator (LDA), compatible with Optimizely CMS 13</small>'),label+' banner suite');
+ assert.ok(html.includes(picker?FRAMED_FOOTER:['about','privacy','legal'].includes(label)?ABOUT_FOOTER:FOOTER),label+' footer');
+ if(picker){assert.doesNotMatch(html,/Coding Koala|Optimizely|Apache|No warranty/);}
+ else if(['about','dashboard','instance','edit','asset','request','confirm','assetConfirm','error'].includes(label)){
+  assert.equal((html.match(/Coding Koala(?!s)/g)||[]).length,1,label+' one brand mention');
+  assert.equal((html.match(/Not affiliated with or endorsed by Optimizely\./g)||[]).length,1,label+' one disclaimer');
+  const footer=html.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)[1];
+  assert.doesNotMatch(footer,/trademark|warranty/);
+ }
 }
 /** A fresh connection whose remote address is reported as another machine. */
 function remote(server,path,{method='GET',headers={},body}={}){
@@ -39,9 +48,10 @@ test('product identity comes from package.json and src/product.js',()=>{
  const license=readFileSync(join(repo,'LICENSE.md'),'utf8');for(const text of['Apache License','Version 2.0, January 2004','TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION','END OF TERMS AND CONDITIONS'])assert.ok(license.includes(text),text);assert.doesNotMatch(license,/Business Source License|Change Date/);
  const notice=readFileSync(join(repo,'NOTICE'),'utf8');for(const text of['Local Developer Accelerator (LDA) Local Assets','Copyright 2026 Coding Koalas Pty Ltd (ACN 668 775 433)','compatible with Optimizely CMS 13','not affiliated with or endorsed by Optimizely'])assert.ok(notice.includes(text),text);
  const heading=readFileSync(join(repo,'CHANGELOG.md'),'utf8').split(/\r?\n/).find(line=>line.startsWith(`## [${pkg.version}] - `));assert.ok(heading&&/ - (unreleased|\d{4}-\d{2}-\d{2})$/.test(heading),'CHANGELOG has an unreleased or dated section for the package version');
-assert.equal(pkg.private,true);assert.equal(pkg.license,'Apache-2.0');assert.equal(pkg.author,'Coding Koalas Pty Ltd');
+assert.equal(pkg.private,true);assert.equal(pkg.license,'Apache-2.0');assert.equal(pkg.author,'Coding Koalas Pty Ltd (https://codingkoala.io)');
  assert.equal(pkg.repository,'github:coding-koala-io/lda-assets');assert.equal(pkg.homepage,'https://github.com/coding-koala-io/lda-assets#readme');assert.equal(pkg.engines.node,'>=24');
- assert.equal(pkg.description,'LDA Local Assets — a local DAM picker and asset library for development, compatible with Optimizely CMS 13. Part of Local Developer Accelerator by Coding Koala. Development use only.');
+ assert.equal(pkg.description,"LDA Local Assets: a local DAM picker and asset library for development, compatible with Optimizely CMS 13. Part of Local Developer Accelerator. Free and open source (Apache 2.0). Development use only. Not affiliated with or endorsed by Optimizely. Built by Coding Koala.");
+ assert.equal(pkg.bugs,'https://github.com/coding-koala-io/lda-assets/issues');
  assert.equal(pkg.scripts['release:build'],'node scripts/build-release.mjs');
 });
 test('/health reports product, version and dataVersion with instance details for loopback callers',async t=>{
@@ -92,22 +102,36 @@ test('banner, header, title suffix and footer appear on dashboard, instance, ass
  assert.ok(pages.dashboard.data.includes('<a href="/">LDA Local Assets · Instances</a>'));
  assert.match(pages.dashboard.data,/<title>Instances · LDA Local Assets<\/title>/);
  assert.ok(pages.picker.data.includes('<header>LDA Local Assets · Asset picker</header>'));
- for(const [label,page]of Object.entries(pages))assert.equal(page.data.includes('target="_blank" rel="noopener"'),label.startsWith('picker'),label+' new-tab links');
+ for(const [label,page]of Object.entries(pages)){
+  for(const anchor of page.data.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g))assert.ok(anchor[0].includes('rel="noopener noreferrer"'),label+' safe new-tab link');
+ }
  assert.ok(!pages.dashboard.data.includes('Local DAM'));
 });
 test('about pages show product facts and render the repository legal files as escaped text',async t=>{
  const gw=await gateway(t);const about=await gw.request('/about');assert.equal(about.status,200);
- for(const text of['LDA Local Assets','Local Developer Accelerator (LDA), compatible with Optimizely CMS 13',`<dd>${pkg.version}</dd>`,'<dt>Data version</dt><dd>1</dd>','Coding Koalas Pty Ltd','Apache License 2.0 — development tool, not for production use','href="/about/privacy"','href="/about/licence"','href="/about/legal"'])assert.ok(about.data.includes(text),text);
+ for(const text of['LDA Local Assets','Local Developer Accelerator (LDA), compatible with Optimizely CMS 13',`<dd>${pkg.version}</dd>`,'<dt>Data version</dt><dd>1</dd>','<dt>Built by</dt><dd><a href="https://codingkoala.io" target="_blank" rel="noopener noreferrer">Coding Koala</a></dd>','<dt>Source</dt><dd><a href="https://github.com/coding-koala-io/lda-assets" target="_blank" rel="noopener noreferrer">GitHub</a></dd>','<dt>Copyright</dt><dd>2026 Coding Koalas Pty Ltd (ACN 668 775 433)</dd>','Apache License 2.0, development tool, not for production use','Optimizely® is a trademark of Optimizely North America Inc. Provided as is, without warranty.','href="/about/privacy"','href="/about/licence"','href="/about/legal"'])assert.ok(about.data.includes(text),text);
  for(const [path,file]of[['/about/privacy','PRIVACY.md'],['/about/licence','LICENSE.md'],['/about/legal','LEGAL-NOTICE.md']]){
   const response=await gw.request(path);assert.equal(response.status,200,path);assert.match(response.headers.get('content-type'),/^text\/html/);assert.match(response.headers.get('content-security-policy'),/frame-ancestors 'self'/);
   assert.ok(response.data.includes(`<pre>${escape(readFileSync(join(repo,file),'utf8'))}</pre>`),path);
+  chrome(response.data,path.split('/').pop());
+  assert.equal((response.data.match(/Built by/g)||[]).length,1,path+' one attribution');
+  assert.equal((response.data.match(/Not affiliated with or endorsed by Optimizely\./g)||[]).length,1,path+' one disclaimer');
+  const footer=response.data.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)[1];
+  assert.doesNotMatch(footer,/href="\/about\/legal"/,path+' approved footer navigation');
+  assert.equal(footer.includes('Built by'),path==='/about/licence',path+' footer attribution');
+  assert.equal(footer.includes('Not affiliated with or endorsed by Optimizely.'),path==='/about/licence',path+' footer disclaimer');
  }
  assert.ok((await gw.request('/about/licence')).data.includes('Apache License'));
  assert.equal((await gw.request('/about/unknown')).status,404);
 });
 test('about pages read files at request time, escape markup and return 404 text when a file is missing',async t=>{
  const root=scratch(t);const gw=await gateway(t,{aboutRoot:pathToFileURL(root+'/')});
- assert.equal((await gw.request('/about/privacy')).status,404);assert.match((await gw.request('/about/privacy')).data,/PRIVACY\.md was not found/);
+ for(const path of['/about/privacy','/about/legal','/about/licence']){
+  const missing=await gw.request(path);assert.equal(missing.status,404,path);chrome(missing.data,'missing');
+  assert.equal((missing.data.match(/Built by/g)||[]).length,1,path+' missing-document attribution');
+  assert.equal((missing.data.match(/Not affiliated with or endorsed by Optimizely\./g)||[]).length,1,path+' missing-document disclaimer');
+ }
+ assert.match((await gw.request('/about/privacy')).data,/PRIVACY\.md was not found/);
  writeFileSync(join(root,'PRIVACY.md'),'# Changed <script>alert(1)</script>');
  const privacy=await gw.request('/about/privacy');assert.equal(privacy.status,200);assert.ok(privacy.data.includes('# Changed &lt;script&gt;alert(1)&lt;/script&gt;'));assert.ok(!privacy.data.includes('<script>alert(1)'));
  const legal=await gw.request('/about/legal');assert.equal(legal.status,404);chrome(legal.data,'missing');
@@ -147,7 +171,7 @@ test('startup logs the product line; a non-loopback HOST prints a loud warning f
  const root=scratch(t);const lines=[];const logger={log:line=>lines.push(['log',line]),warn:line=>lines.push(['warn',line]),error(){}};
  const server=await startServer({host:'127.0.0.1',port:0,tenantsFile:join(root,'tenants.json'),dataDir:':memory:',logDir:':memory:',logger,adminUser:'',adminPassword:''});
  t.after(()=>new Promise(accept=>server.close(accept)));
- assert.deepEqual(lines,[['log',`LDA Local Assets ${pkg.version} (Local Developer Accelerator (LDA), compatible with Optimizely CMS 13) listening at http://127.0.0.1:${server.address().port} — development use only`]]);
+ assert.deepEqual(lines,[['log',`LDA Local Assets ${pkg.version} listening at http://127.0.0.1:${server.address().port} (development use only)`]]);
  const warning=startupWarning('0.0.0.0');for(const text of['development use only','NOT for production','HOST=0.0.0.0','anyone on the network can reach this server','Never point a shared, staging or production site at it'])assert.ok(warning.includes(text),text);assert.ok(warning.split('\n').length>=5);
  const remoteLines=[];const remoteLogger={log:line=>remoteLines.push(['log',line]),warn:line=>remoteLines.push(['warn',line]),error(){}};
  // TEST-NET address: printing happens before listen, which then fails without opening a port.

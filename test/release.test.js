@@ -119,7 +119,7 @@ test('release build produces a zip, sums and manifest; the unpacked zip starts a
   const exited = once(child, 'exit');
   try {
     await eventually(() => { assert.equal(child.exitCode, null, stdout + stderr); return /listening at http:\/\/127\.0\.0\.1:(\d+)/.test(stdout); }, 10000);
-    assert.match(stdout, new RegExp(`LDA Local Assets ${pkg.version.replace(/\./g, '\\.')} \\(Local Developer Accelerator \\(LDA\\), compatible with Optimizely CMS 13\\) listening at`));
+    assert.match(stdout, new RegExp(`LDA Local Assets ${pkg.version.replace(/\./g, '\\.')} listening at http://127\\.0\\.0\\.1:\\d+ \\(development use only\\)`));
     const port = /listening at http:\/\/127\.0\.0\.1:(\d+)/.exec(stdout)[1];
     const health = await (await fetch(`http://127.0.0.1:${port}/health`, {headers: {Connection: 'close'}})).json();
     assert.equal(health.product, 'assets'); assert.equal(health.version, pkg.version); assert.equal(health.dataVersion, 1);

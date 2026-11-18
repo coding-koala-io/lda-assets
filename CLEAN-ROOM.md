@@ -1,6 +1,8 @@
 # How this software was built (clean-room record)
 
-This document records how the compatible behaviour in LDA Local Assets was worked out and written, so anyone can see that it was created independently. Publisher: Coding Koalas Pty Ltd (ACN 668 775 433).
+This document records how the compatible behaviour in LDA Local Assets was worked out and written, so anyone can see that it was created independently. Built by Coding Koala.
+
+Not affiliated with or endorsed by Optimizely.
 
 ## 1. Sources of knowledge
 Behaviour was worked out from three sources only:

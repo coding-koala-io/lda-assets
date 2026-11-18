@@ -18,7 +18,11 @@
 
 Watch the 43-second demo: https://youtu.be/uIBKd3OSXro
 
-Part of **Local Developer Accelerator by Coding Koala**. Works with [LDA Local Graph](https://github.com/coding-koala-io/lda-graph). Compatible with Optimizely CMS 13. Development use only, not for production. Not affiliated with or endorsed by Optimizely.
+Made for CMS 13 sites. Not tested with CMS 12.
+
+Part of Local Developer Accelerator (LDA) · Free and open source (Apache 2.0) · Built by [Coding Koala](https://codingkoala.io/work/local-developer-accelerator) · No telemetry ([network calls](PRIVACY.md#network-connections))
+
+Works with [LDA Local Graph](https://github.com/coding-koala-io/lda-graph). Not affiliated with or endorsed by Optimizely.
 
 ## 2-minute quick start
 
@@ -28,6 +32,17 @@ Needs LDA Local Graph running first.
 irm https://github.com/coding-koala-io/local-developer-accelerator/releases/latest/download/install.ps1 | iex
 lda install assets
 ```
+
+Linux / macOS:
+
+Local Graph must already be running, for example with `lda run graph` in another terminal.
+
+```sh
+curl -fsSL https://github.com/coding-koala-io/local-developer-accelerator/releases/latest/download/install.sh | sh
+lda run assets
+```
+
+Keep this terminal open while using Local Assets. Press Ctrl+C to stop it.
 
 1. Open <http://localhost:8083/>, create an instance and fill in its **Graph link** (address, `appKey` and `secret` of your local Graph tenant).
 2. Click **Add sample assets**, then **Sync all to Graph now**. **Check DAM visibility** must show **yes**.
@@ -51,9 +66,7 @@ Working on the code itself? See [Getting started from source](#getting-started-f
 
 Full list: [Limitations](#limitations).
 
-## Upgrading a site from CMS 12?
-
-Most CMS 12 sites need a .NET 10 move, package changes and, if they use Search & Navigation, a search rebuild. [RepoKoala](https://repokoala.com/?utm_source=github&utm_medium=readme&utm_campaign=lda-assets) gives a written readiness report with a fixed price per application, before you commit budget. Our senior developer reviews and tests every change.
+Moving a site from CMS 12? Coding Koala also offers a paid readiness review: [RepoKoala](https://repokoala.com).
 
 ## Getting started from source
 
@@ -151,7 +164,7 @@ Configuration is validated at startup and hot reloaded after 300 ms. Renaming an
 
 ## Dashboard
 
-Every page shows a development-only banner and a footer with links to **About** (`/about`: product, version, data version, publisher and licence), **Privacy**, **Licence** and **Legal notice**, which display PRIVACY.md, LICENSE.md and LEGAL-NOTICE.md from the installation folder. About pages follow the same access rules as the dashboard. In the asset picker, which the CMS opens for editors, the footer links open in a new tab.
+Every page shows a development-only banner; standard footers end with **About · Privacy · Licence**, the CMS asset picker footer shows only **About**, and **Legal notice** is reached from the About page. About pages follow the same access rules as the dashboard. In the asset picker, which the CMS opens for editors, the footer links open in a new tab.
 
 The home page lists instance names, asset counts, Graph links and last synchronization. Each instance page provides **Connect**, **Graph link**, **Assets**, **Folders**, **Usage**, **Requests**, and **Danger zone** sections. Asset pages expose metadata, folder movement, file replacement and usage. Folders can be created, renamed and deleted only when empty; the root folder is permanent.
 
@@ -246,15 +259,23 @@ Install does not read the old service's settings, so also pass `-Port <n>` if th
 
 `npm run release:build` creates `dist/lda-assets-<version>.zip`, `dist/SHA256SUMS` and `dist/manifest.json`. Tagged releases are built and published by GitHub Actions; see [docs/RELEASING.md](docs/RELEASING.md) and [CHANGELOG.md](CHANGELOG.md).
 
-## Licence
-
-LDA Local Assets is published by Coding Koalas Pty Ltd under the **Apache License 2.0**:
-
-- Open source under the Apache License 2.0: free to use, change and share.
-- It is still a development tool: not for production use, provided "as is".
-
-Legal documents: [LICENSE.md](LICENSE.md) · [LEGAL-NOTICE.md](LEGAL-NOTICE.md) · [PRIVACY.md](PRIVACY.md) · [CLEAN-ROOM.md](CLEAN-ROOM.md) · [TAKEDOWN-AND-CONTACT.md](TAKEDOWN-AND-CONTACT.md) · [CONTRIBUTING.md](CONTRIBUTING.md).
-
 ## Protocol details
 
 The HTTP API and CMS client behaviour are described in [docs/protocol.md](docs/protocol.md).
+
+## Who builds this
+
+Proudly built and maintained by [Coding Koala](https://codingkoala.io/work/local-developer-accelerator), a software company in Sydney, Australia. LDA Local Assets is free and open source under the Apache License 2.0: use it, change it and share it. Every released version stays under that licence, and the licence cannot be withdrawn. No account, no sign-up. Everything in this repository works on its own; nothing is held back for a paid version.
+
+- **Your data:** it runs on your machine and stores content there. It sends nothing to Coding Koala. Nothing checks for updates in the background: only `lda list` and `lda upgrade --check` contact api.github.com, unless you run `lda config set checkUpdates true`. Installs and upgrades download from GitHub. The Graph link connects to the Graph gateway address you configure (normally the local LDA Local Graph). Every call is listed in [PRIVACY.md](PRIVACY.md#network-connections).
+- **Your Optimizely agreement:** LDA contains no Optimizely code ([CLEAN-ROOM.md](CLEAN-ROOM.md)) and is not designed to replace your Optimizely subscription for any live site. It needs no Optimizely credentials; assets synchronize to the Graph gateway you configure through the instance's Graph link. Before use, check your agreement's terms on development use, redirection, competing products and reverse engineering ([LEGAL-NOTICE.md](LEGAL-NOTICE.md)).
+- **Maintenance:** fixes ship as new releases ([CHANGELOG.md](CHANGELOG.md)); only the latest release gets fixes. If this repository ever goes away, the licence lets you keep, fork and run any released version. Bugs and ideas: [GitHub issues](https://github.com/coding-koala-io/lda-assets/issues).
+- **Security:** security@codingkoala.io. We aim to acknowledge reports within 2 business days ([SECURITY.md](https://github.com/coding-koala-io/lda-assets/blob/main/SECURITY.md)).
+
+## Licence
+
+Apache License 2.0; see [LICENSE.md](LICENSE.md) and [NOTICE](NOTICE). A development tool: not for production use, provided "as is".
+
+Copyright 2026 Coding Koalas Pty Ltd (ACN 668 775 433). [Legal notice](LEGAL-NOTICE.md) · [Privacy](PRIVACY.md) · [Contributing](CONTRIBUTING.md) · [Rights-holder contact](TAKEDOWN-AND-CONTACT.md).
+
+Not affiliated with or endorsed by Optimizely. Optimizely® is a trademark of Optimizely North America Inc.

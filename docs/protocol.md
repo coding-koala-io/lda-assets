@@ -1,5 +1,7 @@
 # HTTP protocol
 
+Not affiliated with or endorsed by Optimizely.
+
 The server maintains isolated asset libraries for CMS 13. All CMS-facing routes are relative to `/i/<instanceId>`. Unknown instances return 404. These routes accept supplied credentials without validation and are separate from administration.
 
 ## CMS configuration

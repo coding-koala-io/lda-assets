@@ -8,6 +8,15 @@ Thank you for helping. LDA Local Assets is part of Local Developer Accelerator (
 3. Tests use synthetic data in a temporary `.test-runtime` folder. Windows service tests use mocked UAC, service manager, network and port calls; they never install a service.
 4. `npm run release:build` builds the release zip in `dist/` (see docs/RELEASING.md).
 
+## Screenshots
+Run `npm run screenshots` with an installed Chrome, Edge or Chromium browser. Set `LDA_SCREENSHOT_BROWSER` to select its executable. The capture server binds to `127.0.0.1:18083`. If port `18083` is in use, the run fails.
+
+The script seeds made-up content through the local server routes in a dedicated `.test-runtime/screenshots-demo` folder. It refuses to reuse an existing demo folder and checks the checkout path and captured page text for personal details. It uses a separate temporary browser profile and attempts to remove both the demo folder it created and its temporary browser files when the run ends.
+
+The script stages full-page captures of the standalone tool screens, including confirmations, at 720 px and 360 px. After all captures pass its checks, it publishes them to `docs/media/screens/<page>-<width>.png`, removes obsolete PNGs from that directory and writes `MANIFEST.md`. Stdout reports added, changed, unchanged and removed images.
+
+Run this for every release after `npm run release:build`, from the same checkout. See [release steps](docs/RELEASING.md) for the required independent visual check and log. Screenshot generation is a separate release step so `npm test` and `release:build` also work without a browser.
+
 ## Branches (git flow)
 - `main` holds released versions only; each release is tagged `vX.Y.Z`.
 - `develop` is the integration branch. Start work from it.

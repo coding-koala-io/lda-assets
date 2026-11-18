@@ -14,6 +14,7 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test test/*.test.js",
+    "screenshots": "node scripts/screenshots.mjs",
     "release:build": "node scripts/build-release.mjs",
     "service:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 install",
     "service:uninstall": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/service.ps1 uninstall",

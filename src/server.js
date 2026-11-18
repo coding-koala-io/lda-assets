@@ -32,6 +32,8 @@ export function createServer(options={}){
   let server;
   const publicBase=()=>(config.publicBaseUrl?new URL(config.publicBaseUrl).origin:'')||`http://localhost:${server?.address()?.port??config.port}`;
   const registry=new TenantRegistry(config,logger,publicBase);const token=randomBytes(32).toString('hex');
+  // An explicit demo clock fixes recorded timestamps; durations still use performance.now().
+  const requestTime=config.requestTime??(()=>new Date().toISOString());
   server=http.createServer(async(request,response)=>{
     const started=performance.now();let runtime;let reqBody=null;let resBody=null;const diagnostic={};
     const auth=request.headers.authorization?.split(/\s+/)[0].toLowerCase();
@@ -39,7 +41,7 @@ export function createServer(options={}){
     response.setHeader('X-Content-Type-Options','nosniff');
     response.on('finish',()=>{
       const byteLength=body=>Buffer.byteLength(typeof body==='string'?body:JSON.stringify(body)??'');
-      const entry={ts:new Date().toISOString(),method:request.method,url:redactUrl(request.url),status:response.statusCode,ms:Math.round(performance.now()-started),authKind,headers:safeHeaders(request.headers),reqBody:config.logBodies?truncate(sanitizeLog(reqBody)):null,resBody:config.logBodies?truncate(sanitizeLog(resBody)):null,reqTruncated:config.logBodies&&byteLength(reqBody)>65536,resTruncated:config.logBodies&&byteLength(resBody)>65536};
+      const entry={ts:requestTime(),method:request.method,url:redactUrl(request.url),status:response.statusCode,ms:Math.round(performance.now()-started),authKind,headers:safeHeaders(request.headers),reqBody:config.logBodies?truncate(sanitizeLog(reqBody)):null,resBody:config.logBodies?truncate(sanitizeLog(resBody)):null,reqTruncated:config.logBodies&&byteLength(reqBody)>65536,resTruncated:config.logBodies&&byteLength(resBody)>65536};
       (runtime&&!diagnostic.suppressTenantLog?runtime.log:registry.unrouted).append(entry);
       logger.log(`[${runtime?.tenant.id??'_unrouted'}] ${request.method} ${entry.url} ${response.statusCode} ${entry.ms}ms auth=${authKind}`);
     });

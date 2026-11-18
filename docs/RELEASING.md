@@ -24,6 +24,18 @@ Releases use git flow. `main` holds released versions, `develop` is the integrat
 
    Check that `dist/lda-assets-X.Y.Z.zip`, `dist/SHA256SUMS` and `dist/manifest.json` were created. `dist/` is not committed.
 
+   Before finishing every release (including hotfixes), regenerate screenshots from this same checkout, whose server source is packaged by the release build:
+
+   ```powershell
+   npm run screenshots
+   ```
+
+   Use a machine with an installed Chromium-family browser; `LDA_SCREENSHOT_BROWSER` may select its executable. This required release step stays separate from `release:build`, so ordinary tests and archive builds do not need a browser. A browserless machine must complete this step on a browser-equipped machine before tagging; do not skip it.
+
+   Save the stdout before/after file list in the release review. Have someone other than the screenshot author inspect every generated PNG at its native 360 px or 720 px width: the whole page and footer must be present, text readable, and nothing clipped. Log the reviewer, the image set reviewed and pass/fail in the release review. Correct failures in the live UI and rerun the script; never retouch a capture.
+
+   Include `docs/media/screens/*.png` and `MANIFEST.md` in the release preparation changes. If the UI changes after capture, regenerate and repeat the independent review before tagging. Never replace the README demo GIFs with a hand-made capture.
+
 4. Finish the release (merges into `main` and `develop` and creates the tag `vX.Y.Z`):
 
    ```powershell

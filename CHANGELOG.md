@@ -5,6 +5,20 @@ Not affiliated with or endorsed by Optimizely.
 All notable changes to LDA Local Assets are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-11-18
+
+### Added
+- The README now has a Linux and macOS quick start. Start Local Graph first, then use the CLI to run Local Assets with `lda run assets`.
+- The documentation includes full-page screenshots of all 14 standalone Local Assets screens at 360 and 720 pixels, with an index and steps to regenerate them using demo data.
+
+### Changed
+- The README identifies Coding Koala as the maintainer and explains CMS 13 compatibility, the Apache 2.0 licence, what connects to the network, and how to get fixes or report a security issue. The legal and project documents also use the Coding Koala name.
+- Standard Local Assets footers credit Coding Koala and link to About, Privacy and Licence. The About page links to the source and Legal notice and shows copyright and warranty information. The CMS asset picker drops Coding Koala branding and has one footer link, About, which opens in a new tab.
+- Package information adds the Coding Koala website and a link for reporting bugs. The Windows service description credits Coding Koala, and the shorter startup message shows the product, version and listening address.
+
+### Fixed
+- Dashboard tables stack into labelled rows at widths of 760 pixels or less, so values such as request status are easier to read on phones.
+
 ## [1.1.3] - 2026-11-05
 
 ### Changed
